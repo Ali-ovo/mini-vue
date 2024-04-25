@@ -1,19 +1,29 @@
-import { track, trigger } from './effect'
+import { mutableHandlers, readonlyHandlers } from './basehandlers'
+
+export enum ReactiveFlags {
+  SKIP = '__v_skip',
+  IS_REACTIVE = '__v_isReactive',
+  IS_READONLY = '__v_isReadonly',
+  IS_SHALLOW = '__v_isShallow',
+  RAW = '__v_raw',
+}
+
+function createActiveObject(raw, baseHandlers) {
+  return new Proxy(raw, baseHandlers)
+}
 
 export function reactive(raw) {
-  return new Proxy(raw, {
-    get(target, key) {
-      const res = Reflect.get(target, key)
+  return createActiveObject(raw, mutableHandlers)
+}
 
-      track(target, key)
-      return res
-    },
+export function readonly(raw) {
+  return createActiveObject(raw, readonlyHandlers)
+}
 
-    set(target, key, newValue) {
-      const res = Reflect.set(target, key, newValue)
+export function isReactive(value) {
+  return !!value[ReactiveFlags.IS_REACTIVE]
+}
 
-      trigger(target, key)
-      return res
-    },
-  })
+export function isReadonly(value) {
+  return !!value[ReactiveFlags.IS_READONLY]
 }
