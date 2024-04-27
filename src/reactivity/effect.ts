@@ -3,11 +3,10 @@ import { extend } from '../shared/index'
 let activeEffect
 let shouldTrack
 
-class ReactiveEffect {
+export class ReactiveEffect {
   private _fn: any
   active = true
   deps = []
-
   onStop?: () => void
 
   constructor(fn, public scheduler?) {
@@ -83,10 +82,8 @@ export function isTracking() {
 
 export function trigger(target, key) {
   const depsMap = targetMap.get(target)
-  if (!depsMap) return
 
   const dep = depsMap.get(key)
-  if (!dep) return
 
   triggerEffects(dep)
 }
