@@ -1,7 +1,9 @@
 import { h } from '../../lib/guide-vue.esm.js'
+import { Foo } from './Foo.js'
 
 window.self = null
 export const App = {
+  name:"App",
   render() {
     window.self = this
     return h(
@@ -16,21 +18,23 @@ export const App = {
         },
       },
       [
-        h(
-          'span',
-          {
-            class: ['red'],
-          },
-          'Hello'
-        ),
-        h('span', null, this.msg),
+        // h(
+        //   'span',
+        //   {
+        //     class: ['red'],
+        //   },
+        //   'Hello'
+        // ),
+        // h('span', null, this.msg),
+        h('div', {}, 'hi, ' + this.msg),
+        h(Foo, { count: 1 }),
       ]
     )
   },
 
   setup() {
     return {
-      msg: ' world! 111 ',
+      msg: ' world!',
     }
   },
 }
