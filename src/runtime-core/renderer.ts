@@ -1,6 +1,7 @@
 import { isObject } from '../shared'
 import { ShapeFlags } from '../shared/ShapeFlags'
 import { createComponentInstance, setupComponent } from './component'
+import { Fragment, Text } from './vnode'
 
 export function render(vnode, container) {
   // patch
@@ -9,17 +10,27 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-  const { shapeFlag } = vnode
+  const { shapeFlag, type } = vnode
 
-  if (shapeFlag & ShapeFlags.ELEMENT) {
-    processElement(vnode, container)
-  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-    processComponent(vnode, container)
+  // Fragment
+  switch (type) {
+    case Fragment:
+      processFragment(vnode, container)
+      break
+
+    case Text:
+      processText(vnode, container)
+      break
+
+    default:
+      if (shapeFlag & ShapeFlags.ELEMENT) {
+        processElement(vnode, container)
+      } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+        processComponent(vnode, container)
+      }
+
+      break
   }
-}
-
-function processElement(vnode, container) {
-  mountElement(vnode, container)
 }
 
 function mountElement(vnode, container) {
@@ -57,10 +68,6 @@ function mountChildren(vnode, container) {
   })
 }
 
-function processComponent(vnode, container) {
-  mountComponent(vnode, container)
-}
-
 function mountComponent(initialVNode, container) {
   // 创建组件实例
   const instance = createComponentInstance(initialVNode)
@@ -70,6 +77,24 @@ function mountComponent(initialVNode, container) {
 
   // 调用render
   setupRenderEffect(instance, initialVNode, container)
+}
+
+function processElement(vnode, container) {
+  mountElement(vnode, container)
+}
+
+function processFragment(vnode: any, container: any) {
+  mountChildren(vnode, container)
+}
+
+function processText(vnode, container) {
+  const { children } = vnode
+  const textNode = (vnode.el = document.createTextNode(children))
+  container.append(textNode)
+}
+
+function processComponent(vnode, container) {
+  mountComponent(vnode, container)
 }
 
 function setupRenderEffect(instance, initialVNode, container) {
