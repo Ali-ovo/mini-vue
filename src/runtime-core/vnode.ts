@@ -7,7 +7,7 @@ export const Fragment = Symbol('Fragment')
 export function createVNode(type, props?, children?) {
   const vnode = {
     type,
-    props,
+    props: props || {},
     children,
     el: null,
     shapeFlag: getShapeflag(type),
