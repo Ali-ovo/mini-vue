@@ -1,25 +1,27 @@
-import { createRenderer } from "../../lib/guide-vue.esm.js";
+import { createRenderer } from '../../lib/guide-vue.esm.js'
 
 // 给基于 pixi.js 的渲染函数
 const renderer = createRenderer({
   createElement(type) {
-    const rect = new PIXI.Graphics();
-    rect.beginFill(0xff0000);
-    rect.drawRect(0, 0, 100, 100);
-    rect.endFill();
+    if (type === 'rect') {
+      const rect = new PIXI.Graphics()
+      rect.beginFill(0xffffff)
+      rect.drawRect(0, 0, 100, 100)
+      rect.endFill()
 
-    return rect;
+      return rect
+    }
   },
 
   patchProp(el, key, prevValue, nextValue) {
-    el[key] = nextValue;
+    el[key] = prevValue
   },
 
   insert(el, parent) {
-    parent.addChild(el);
+    parent.addChild(el)
   },
-});
+})
 
 export function createApp(rootComponent) {
-  return renderer.createApp(rootComponent);
+  return renderer.createApp(rootComponent)
 }

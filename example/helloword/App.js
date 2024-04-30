@@ -1,9 +1,9 @@
-import { h } from '../../lib/guide-vue.esm.js'
+import { h, ref } from '../../lib/guide-vue.esm.js'
 import { Foo } from './Foo.js'
 
 window.self = null
 export const App = {
-  name:"App",
+  name: 'App',
   render() {
     window.self = this
     return h(

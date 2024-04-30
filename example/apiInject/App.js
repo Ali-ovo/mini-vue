@@ -25,7 +25,10 @@ const ProviderTwo = {
     }
   },
   render() {
-    return h('div', {}, [h('p', {}, `ProviderTwo foo: ${this.foo}`), h(Consumer)])
+    return h('div', {}, [
+      h('p', {}, `ProviderTwo foo: ${this.foo}`),
+      h(Consumer),
+    ])
   },
 }
 

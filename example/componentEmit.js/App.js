@@ -22,13 +22,17 @@ export default {
           console.log(a, b)
         },
         onAdd(props) {
-          console.log('%c [ props ]-25', 'font-size:13px; background:#1508cd; color:#594cff;', props)
+          console.log(
+            '%c [ props ]-25',
+            'font-size:13px; background:#1508cd; color:#594cff;',
+            props
+          )
           console.log('---------------add------------------')
         },
         onAddFoo(props) {
           console.log('---------------add-foo------------------')
           console.log(props)
-        }
+        },
       }),
     ])
   },

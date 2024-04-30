@@ -11,15 +11,15 @@ export default {
     let dir = 1;
     const speed = 2;
 
-    game.ticker.add(() => {
-      if (x.value > 400) {
-        dir = -1;
-      } else if (x.value < 0) {
-        dir = 1;
-      }
+    // game.ticker.add(() => {
+    //   if (x.value > 400) {
+    //     dir = -1;
+    //   } else if (x.value < 0) {
+    //     dir = 1;
+    //   }
 
-      x.value += speed * dir;
-    });
+    //   x.value += speed * dir;
+    // });
 
     return {
       x,
@@ -28,6 +28,6 @@ export default {
   },
 
   render() {
-    return h("rect", { x: this.x, y: this.y });
+    return h("rect", { x: 100, y: 100 });
   },
 };
