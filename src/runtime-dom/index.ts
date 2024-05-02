@@ -18,8 +18,9 @@ function patchProp(el, key, prevVal, nextVal) {
   }
 }
 
-function insert(el, container) {
-  container.append(el)
+function insert(child, parent, anchor) {
+  // container.append(el)
+  parent.insertBefore(child, anchor || null)
 }
 
 function remove(child) {
@@ -38,8 +39,7 @@ const renderer: any = createRenderer({
   patchProp,
   insert,
   remove,
-  setElementText
-  
+  setElementText,
 })
 
 export function createApp(...args) {

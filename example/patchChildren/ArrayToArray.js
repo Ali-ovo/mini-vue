@@ -53,6 +53,7 @@ import { ref, h } from "../../lib/guide-vue.esm.js";
 // i = 0, e1 = -1, e2 = 0
 // const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
 // const nextChildren = [
+//   h("p", { key: "D" }, "D"),
 //   h("p", { key: "C" }, "C"),
 //   h("p", { key: "A" }, "A"),
 //   h("p", { key: "B" }, "B"),
