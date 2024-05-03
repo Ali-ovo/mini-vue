@@ -8,7 +8,7 @@ export default {
     const count = ref(0)
 
     const onClick = () => {
-      count.value++
+      count.value = 1
     }
 
     return {
@@ -32,7 +32,9 @@ export default {
           },
           'click'
         ),
-        h(Children),
+        h(Children, {
+          count: this.count,
+        }),
       ]
     )
   },

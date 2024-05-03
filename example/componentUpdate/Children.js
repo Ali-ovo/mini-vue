@@ -58,6 +58,7 @@ export default {
           },
           'changeProps - key没有 -删除'
         ),
+        h('div', null, 'child - props - msg:' + this.$props.count),
       ]
     )
   },
