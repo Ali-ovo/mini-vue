@@ -9,5 +9,9 @@ export const hasChanged = (value, newValue) => {
 }
 
 export function hasOwn(val, key) {
-  return Object.prototype.hasOwnProperty.call(val, key);
+  return Object.prototype.hasOwnProperty.call(val, key)
+}
+
+export function isString(val) {
+  return typeof val === 'string'
 }
