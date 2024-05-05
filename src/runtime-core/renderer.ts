@@ -1,11 +1,10 @@
 import { effect } from '../reactivity'
-import { isObject } from '../shared'
 import { ShapeFlags } from '../shared/ShapeFlags'
 import { createComponentInstance, setupComponent } from './component'
 import { shouldUpdateComponent } from './componentUpdateUtils'
 import { createAppApi } from './createApp'
 import { queueJobs } from './scheduler'
-import { Fragment, Text } from './vnode'
+import { Fragment, Text, normalizeVNode } from './vnode'
 
 export function createRenderer(options) {
   const {
@@ -25,17 +24,15 @@ export function createRenderer(options) {
   // n2 -> newVnode
   function patch(n1, n2, container, parentComponent, anchor) {
     const { shapeFlag, type } = n2
-    console.log('patch n1', n1)
-    console.log('patch n2', n2)
 
     // Fragment
     switch (type) {
-      case Fragment:
-        processFragment(n1, n2, container, parentComponent, anchor)
-        break
-
       case Text:
         processText(n1, n2, container)
+        break
+
+      case Fragment:
+        processFragment(n1, n2, container, parentComponent, anchor)
         break
 
       default:
@@ -343,7 +340,7 @@ export function createRenderer(options) {
       () => {
         if (!instance.isMounted) {
           const { proxy } = instance
-          const subTree = (instance.subTree = instance.render.call(proxy))
+          const subTree = (instance.subTree = normalizeVNode(instance.render.call(proxy, proxy)))
 
           // vnode -> patch
           patch(null, subTree, container, instance, anchor)
@@ -361,12 +358,12 @@ export function createRenderer(options) {
           }
 
           const { proxy } = instance
-          const subTree = instance.render.call(proxy)
+          const subTree = normalizeVNode(instance.render.call(proxy, proxy))
           const prevSubTree = instance.subTree
 
           instance.subTree = subTree
 
-          patch(prevSubTree, subTree, container, instance, anchor)
+          patch(prevSubTree, subTree, prevSubTree.el, instance, anchor)
         }
       },
       {

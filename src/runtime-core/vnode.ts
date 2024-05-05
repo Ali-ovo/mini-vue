@@ -4,6 +4,8 @@ import { ShapeFlags } from '../shared/ShapeFlags'
 export const Text = Symbol('Text')
 export const Fragment = Symbol('Fragment')
 
+export { createVNode as createElementVNode }
+
 export function createVNode(type, props?, children?) {
   const vnode = {
     type,
@@ -36,4 +38,13 @@ function getShapeflag(type) {
 
 export function createTextVNode(text: string) {
   return createVNode(Text, {}, text)
+}
+
+export function normalizeVNode(child) {
+  // 暂时只支持处理 child 为 string 和 number 的情况
+  if (typeof child === "string" || typeof child === "number") {
+    return createVNode(Text, null, String(child));
+  } else {
+    return child;
+  }
 }

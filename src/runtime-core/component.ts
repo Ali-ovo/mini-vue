@@ -7,10 +7,13 @@ import { initSlots } from './componentSlots'
 
 let currentInstance = null
 
-export function createComponentInstance(vnode, parent) {
-  // console.log('createComponentInstance', parent)
+let compile
+export function registerRuntimeCompiler(_compiler) {
+  compile = _compiler
+}
 
-  const component = {
+export function createComponentInstance(vnode, parent) {
+  const instance = {
     vnode,
     type: vnode.type,
     next: null,
@@ -22,12 +25,17 @@ export function createComponentInstance(vnode, parent) {
     proxy: null,
     isMounted: false,
     subTree: {},
+    ctx: {}, // context 对象
     emit: () => {},
   }
 
-  component.emit = emit.bind(null, component) as any
+  instance.ctx = {
+    _: instance,
+  }
 
-  return component
+  instance.emit = emit.bind(null, instance) as any
+
+  return instance
 }
 
 export function setupComponent(instance) {
@@ -73,6 +81,15 @@ function finishComponentSetup(instance) {
   const Component = instance.type
 
   if (!instance.render) {
+    // 如果 compile 有值 并且当然组件没有 render 函数，那么就需要把 template 编译成 render 函数
+    if (compile && !Component.render) {
+      if (Component.template) {
+        // 这里就是 runtime 模块和 compile 模块结合点
+        const template = Component.template
+        Component.render = compile(template)
+      }
+    }
+
     instance.render = Component.render
   }
 }
