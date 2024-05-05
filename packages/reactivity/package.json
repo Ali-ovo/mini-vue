@@ -1,0 +1,14 @@
+{
+  "name": "@guide-mini-vue/reactivity",
+  "version": "1.0.0",
+  "description": "@guide-mini-vue/reactivity",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@guide-mini-vue/shared": "workspace:^1.0.0"
+  }
+}
