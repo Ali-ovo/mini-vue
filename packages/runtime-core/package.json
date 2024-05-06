@@ -2,9 +2,7 @@
   "name": "@guide-mini-vue/runtime-core",
   "version": "1.0.0",
   "description": "@guide-mini-vue/runtime-core",
-  "scripts": {
-    "test": "jest"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",

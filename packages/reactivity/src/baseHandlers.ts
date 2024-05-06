@@ -8,7 +8,7 @@ const readonlyGet = createGetter(true)
 const shallowReadonlyGet = createGetter(true, true)
 
 function createGetter(isReadonly = false, shallow = false) {
-  return function get(target, key) {
+  return function get(target, key, receiver) {
     if (key === ReactiveFlags.IS_REACTIVE) {
       return !isReadonly
     }
@@ -17,10 +17,10 @@ function createGetter(isReadonly = false, shallow = false) {
       return isReadonly
     }
 
-    const res = Reflect.get(target, key)
+    const res = Reflect.get(target, key, receiver)
 
     if (shallow) {
-      return res 
+      return res
     }
 
     if (isObject(res)) {
@@ -35,8 +35,8 @@ function createGetter(isReadonly = false, shallow = false) {
 }
 
 function creteSetter() {
-  return function set(target, key, newValue) {
-    const res = Reflect.set(target, key, newValue)
+  return function set(target, key, newValue, receiver) {
+    const res = Reflect.set(target, key, newValue, receiver)
 
     trigger(target, key)
     return res

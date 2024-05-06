@@ -2,9 +2,7 @@
   "name": "@guide-mini-vue/reactivity",
   "version": "1.0.0",
   "description": "@guide-mini-vue/reactivity",
-  "scripts": {
-    "test": "jest"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",

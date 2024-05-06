@@ -1,4 +1,5 @@
-import { extend } from "@guid-mini-vue/shared"
+import { extend } from '@guid-mini-vue/shared'
+import { createDep } from './dep'
 
 let activeEffect
 let shouldTrack
@@ -24,6 +25,7 @@ export class ReactiveEffect {
     const result = this._fn()
     // reset
     shouldTrack = false
+    activeEffect = undefined
 
     return result
   }
@@ -70,10 +72,10 @@ export function track(target, key) {
 }
 
 export function trackEffects(dep) {
-  if (dep.has(activeEffect)) return
-
-  dep.add(activeEffect)
-  activeEffect.deps.push(dep)
+  if (!dep.has(activeEffect)) {
+    dep.add(activeEffect)
+    ;(activeEffect as any).deps.push(dep)
+  }
 }
 
 export function isTracking() {
@@ -81,11 +83,23 @@ export function isTracking() {
 }
 
 export function trigger(target, key) {
+  let deps: Array<any> = []
+
   const depsMap = targetMap.get(target)
 
-  const dep = depsMap.get(key)
+  if (!depsMap) return
 
-  triggerEffects(dep)
+  const dep = depsMap.get(key)
+  deps.push(dep)
+
+  const effects: Array<any> = []
+
+  deps.forEach((dep) => {
+    // 这里解构 dep 得到的是 dep 内部存储的 effect
+    effects.push(...dep)
+  })
+
+  triggerEffects(createDep(effects))
 }
 
 export function triggerEffects(dep) {
